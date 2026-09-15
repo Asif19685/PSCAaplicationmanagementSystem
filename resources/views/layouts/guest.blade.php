@@ -30,31 +30,53 @@
 
         * { font-family: 'Inter', sans-serif; box-sizing: border-box; }
 
+        html {
+            background-color: #081220;
+        }
+
         body {
-            background: linear-gradient(140deg, #0d2137 0%, #1a3a5c 45%, #1d4f80 75%, #0d2137 100%);
+            background-color: #081220;
+            background-image: url('/images/psca_bg.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Animated glow circles */
+        /* Dark overlay on background image */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(140deg,
+                rgba(8, 18, 32, 0.78) 0%,
+                rgba(13, 33, 60, 0.70) 50%,
+                rgba(8, 18, 32, 0.82) 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Ambient glow circles */
         .bg-circle-1 {
             position: fixed; top: -15%; right: -8%;
             width: 550px; height: 550px;
-            background: radial-gradient(circle, rgba(232,160,32,0.14) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(232,160,32,0.12) 0%, transparent 70%);
             border-radius: 50%;
-            animation: floatA 9s ease-in-out infinite;
             pointer-events: none; z-index: 0;
         }
         .bg-circle-2 {
             position: fixed; bottom: -15%; left: -8%;
             width: 450px; height: 450px;
-            background: radial-gradient(circle, rgba(29,79,128,0.5) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(29,79,128,0.45) 0%, transparent 70%);
             border-radius: 50%;
-            animation: floatB 12s ease-in-out infinite;
             pointer-events: none; z-index: 0;
         }
         .bg-dots {
@@ -64,15 +86,6 @@
         .bg-dots-2 {
             position: fixed; bottom: 12%; right: 4%;
             opacity: 0.08; pointer-events: none; z-index: 0;
-        }
-
-        @keyframes floatA {
-            0%,100% { transform: translateY(0) scale(1); }
-            50%      { transform: translateY(-25px) scale(1.03); }
-        }
-        @keyframes floatB {
-            0%,100% { transform: translateY(0) scale(1); }
-            50%      { transform: translateY(20px) scale(1.04); }
         }
 
         /* Auth wrapper */
@@ -86,7 +99,7 @@
             padding: 30px 16px;
         }
 
-        /* Auth card */
+        /* Auth card - clean without flashing zero-opacity animations */
         .auth-card {
             background: #fff;
             border-radius: 22px;
@@ -94,12 +107,6 @@
             width: 100%;
             max-width: 470px;
             overflow: hidden;
-            animation: cardIn 0.5s cubic-bezier(.22,.68,0,1.2) both;
-        }
-
-        @keyframes cardIn {
-            from { opacity:0; transform: translateY(35px) scale(0.97); }
-            to   { opacity:1; transform: translateY(0) scale(1); }
         }
 
         /* Card header */
@@ -119,14 +126,17 @@
         }
 
         .auth-logo-wrap {
-            width: 72px; height: 72px;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(232,160,32,0.55);
+            width: 80px; height: 80px;
+            background: rgba(255,255,255,0.95);
+            border: 3px solid rgba(232,160,32,0.7);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             margin: 0 auto 14px;
+            box-shadow: 0 4px 20px rgba(232,160,32,0.3);
+            padding: 8px;
         }
         .auth-logo-wrap svg { width: 42px; height: 42px; fill: #e8a020; }
+        .auth-logo-wrap img { width: 58px; height: 58px; object-fit: contain; }
 
         .auth-card-header h1 {
             color: #fff;
@@ -318,7 +328,15 @@
             <!-- Header -->
             <div class="auth-card-header">
                 <div class="auth-logo-wrap">
-                    <x-application-logo />
+                    <img
+                        src="{{ asset('images/psca_logo.png') }}"
+                        alt="PSCA Logo"
+                        width="50"
+                        height="50"
+                        style="width:50px; height:50px; object-fit:contain;"
+                        onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';"
+                    />
+                    <span style="display:none; color:#e8a020; font-size:1.6rem; font-weight:800; letter-spacing:1px;">PSCA</span>
                 </div>
                 <h1>{{ config('app.name', 'PSCA') }}</h1>
                 <p>@yield('header-subtitle', 'Application Management System')</p>
