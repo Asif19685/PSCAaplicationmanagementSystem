@@ -5,11 +5,8 @@ namespace Database\Seeders;
 use App\Models\Website;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class WebsiteSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
         $sampleWebsites = [
